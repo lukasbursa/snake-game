@@ -1,0 +1,11 @@
+h1{
+    text-align: center;
+    text-transform: capitalize;
+}
+
+#playground{
+    display: block;
+    background-color: rgb(53, 127, 247);
+    margin: 0 auto;
+    border: 10px solid black
+}
