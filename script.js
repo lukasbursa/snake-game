@@ -2,8 +2,8 @@
 // Settings
 
 let snakeSize = 20 // Size of one square of snake
-let playgroundSizeX = 400 // Width of playground
-let playgroundSizeY = 400 // Height of playground
+let playgroundSizeX = 500 // Width of playground
+let playgroundSizeY = 500 // Height of playground
 let gameSpeed = 100
 let playgroundColor = "rgb(53, 127, 247)"
 let snakeColor = "black"
@@ -113,6 +113,7 @@ let food = {
 
 let game = {
     playing: false,
+    isNewGame: false,
     score: 0,
     pressedKey: "",
 
@@ -136,6 +137,8 @@ let game = {
 
     newGame: function(){
         game.score = 0
+        document.querySelector("#actual-score strong").textContent = game.score
+        game.isNewGame = true
        
         snake.position = JSON.parse(JSON.stringify(defaultSnakePosition))        
         snake.direction = defaultSnakeDirection
@@ -169,16 +172,18 @@ let game = {
        
         snake.move(ateFood, snake.direction)
         
+        
         if((food.position.x == snake.position[0].x) && (food.position.y == snake.position[0].y)){
             food.previousPosition = food.position
             game.score++;
             food.generateNew()
-            console.log("Score: " + game.score)
+            document.querySelector("#actual-score strong").textContent = game.score
         }
 
         if(!game.isCollision(snake.direction)){setTimeout(game.runGame, gameSpeed)}else{
             game.playing = false
-            game.newGame()
+            game.isNewGame = false
+            
         }
     }
 }
@@ -194,11 +199,15 @@ document.addEventListener("keydown", event => {
     event.preventDefault()
     game.pressedKey = event.key
 
-    if((event.key == "ArrowRight" || event.key == "ArrowLeft" || event.key == "ArrowUp" || event.key == "ArrowDown") && game.playing == false){
+    if((event.key == "ArrowRight" || event.key == "ArrowLeft" || event.key == "ArrowUp" || event.key == "ArrowDown") && (game.playing == false) && (game.isNewGame == true)){
         game.playing = true
         game.runGame()
     }
 })
 
+document.querySelector("#new-game").addEventListener("click", event => {
+    event.preventDefault()
+    game.newGame()
+})
 
 
