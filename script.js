@@ -4,9 +4,9 @@ import("./swiped-events.js");
 
 // Settings
 
-let snakeSize = 25; // Size of one square of snake
-let playgroundSizeX = 500; // Width of playground
-let playgroundSizeY = 500; // Height of playground
+let snakeSize = 25;
+let playgroundSizeX = 500;
+let playgroundSizeY = 500;
 let gameSpeed = 100;
 let playgroundColor = "#333";
 let snakeColor = "white";
