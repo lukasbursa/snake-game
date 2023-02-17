@@ -1,6 +1,6 @@
 "use strict";
 
-import("./swiped-events.js")
+import("./swiped-events.js");
 
 // Settings
 
@@ -22,11 +22,11 @@ let startY = Math.floor(playgroundSizeY / snakeSize / 2 + 1) * snakeSize;
 let canvasSelect = document.querySelector("#playground");
 let canvas = canvasSelect.getContext("2d");
 
-let setWidth = document.querySelector(".playground-cont").offsetWidth
-let canvasSet = document.querySelector("#playground")
+let setWidth = document.querySelector(".playground-cont").offsetWidth;
+let canvasSet = document.querySelector("#playground");
 
-canvasSet.style.width = setWidth + "px"
-canvasSet.style.height = setWidth + "px"
+canvasSet.style.width = setWidth + "px";
+canvasSet.style.height = setWidth + "px";
 
 // Create default snake
 
@@ -312,9 +312,8 @@ let page = {
     if (Array.isArray(localLeaderboard)) {
       localLeaderboard.forEach((oneResult) => {
         let newP = document.createElement("p");
-        newP.innerHTML = `<strong>${oneResult.score}</strong> - ${
-          oneResult.name == "" ? "<em>bezejmenný hráč</em>" : oneResult.name
-        }`;
+        newP.innerHTML = `<strong>${oneResult.score}</strong> - ${oneResult.name == "" ? "<em>bezejmenný hráč</em>" : oneResult.name
+          }`;
         scoreContainer.appendChild(newP);
       });
     } else {
@@ -329,7 +328,6 @@ let page = {
       document.getElementById("nastaveni-hry").style.display = "block";
       document.getElementById("o-projektu").style.display = "none";
       document.getElementById("nejlepsi-skore").style.display = "none";
-
     } else if (page == "about") {
       document.getElementById("nastaveni-hry").style.display = "none";
       document.getElementById("o-projektu").style.display = "block";
@@ -432,36 +430,36 @@ document.getElementById("form-save").addEventListener("submit", (event) => {
 
 document.getElementById("settings").addEventListener("submit", (event) => {
   event.preventDefault();
-  console.log(event.target.settingsType.value)
-  if(event.target.settingsType.value && event.target.settingsSpeed.value){
+  console.log(event.target.settingsType.value);
+  if (event.target.settingsType.value && event.target.settingsSpeed.value) {
     let settings = {
-        type: event.target.settingsType.value,
-        speed: event.target.settingsSpeed.value,
-      };
-      localStorage.setItem("settings", JSON.stringify(settings));
-      game.newGame();
+      type: event.target.settingsType.value,
+      speed: event.target.settingsSpeed.value,
+    };
+    localStorage.setItem("settings", JSON.stringify(settings));
+    game.newGame();
   }
 });
 
-
-document.querySelector("#playground").addEventListener('swiped', function(event) {
-    switch(event.detail.dir){
-        case "left":
-            game.pressedKey = "ArrowLeft";
+document
+  .querySelector("#playground")
+  .addEventListener("swiped", function (event) {
+    switch (event.detail.dir) {
+      case "left":
+        game.pressedKey = "ArrowLeft";
         break;
-        case "right":
-            game.pressedKey = "ArrowRight";
-        break
-        case "up":
-            game.pressedKey = "ArrowUp";
-        break
-        case "down":
-            game.pressedKey = "ArrowDown";
-        break
+      case "right":
+        game.pressedKey = "ArrowRight";
+        break;
+      case "up":
+        game.pressedKey = "ArrowUp";
+        break;
+      case "down":
+        game.pressedKey = "ArrowDown";
+        break;
     }
-    if(game.playing == false && game.isNewGame == true){
-        game.playing = true;
-        game.runGame();
+    if (game.playing == false && game.isNewGame == true) {
+      game.playing = true;
+      game.runGame();
     }
-});
-
+  });
