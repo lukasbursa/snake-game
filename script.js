@@ -60,8 +60,8 @@ let snake = {
   move: function (ateFood, direction) {
     canvas.fillStyle = playgroundColor;
     canvas.fillRect(
-      this.deletedPart.x,
-      this.deletedPart.y,
+      snake.deletedPart.x,
+      snake.deletedPart.y,
       snakeSize,
       snakeSize
     );
@@ -70,48 +70,48 @@ let snake = {
     if (game.type == "jinjang") {
       if (
         !(
-          food.position.x == playgroundSizeX - this.deletedPart.x - snakeSize &&
-          food.position.y == playgroundSizeY - this.deletedPart.y - snakeSize
+          food.position.x == playgroundSizeX - snake.deletedPart.x - snakeSize &&
+          food.position.y == playgroundSizeY - snake.deletedPart.y - snakeSize
         )
       ) {
         canvas.fillRect(
-          playgroundSizeX - this.deletedPart.x - snakeSize,
-          playgroundSizeY - this.deletedPart.y - snakeSize,
+          playgroundSizeX - snake.deletedPart.x - snakeSize,
+          playgroundSizeY - snake.deletedPart.y - snakeSize,
           snakeSize,
           snakeSize
         );
       }
     }
 
-    !ateFood ? this.position.pop() : "";
-    this.deletedPart = this.position[this.position.length - 1];
+    !ateFood ? snake.position.pop() : "";
+    snake.deletedPart = snake.position[snake.position.length - 1];
     switch (direction) {
       case "right":
-        this.position.unshift({
-          x: this.position[0].x + snakeSize,
-          y: this.position[0].y,
+        snake.position.unshift({
+          x: snake.position[0].x + snakeSize,
+          y: snake.position[0].y,
         });
         break;
       case "left":
-        this.position.unshift({
-          x: this.position[0].x - snakeSize,
-          y: this.position[0].y,
+        snake.position.unshift({
+          x: snake.position[0].x - snakeSize,
+          y: snake.position[0].y,
         });
         break;
       case "up":
-        this.position.unshift({
-          x: this.position[0].x,
-          y: this.position[0].y - snakeSize,
+        snake.position.unshift({
+          x: snake.position[0].x,
+          y: snake.position[0].y - snakeSize,
         });
         break;
       case "down":
-        this.position.unshift({
-          x: this.position[0].x,
-          y: this.position[0].y + snakeSize,
+        snake.position.unshift({
+          x: snake.position[0].x,
+          y: snake.position[0].y + snakeSize,
         });
         break;
     }
-    this.position.forEach((snakePart) => {
+    snake.position.forEach((snakePart) => {
       canvas.fillStyle = snakeColor;
       canvas.fillRect(snakePart.x, snakePart.y, snakeSize, snakeSize);
 
@@ -161,10 +161,10 @@ let food = {
         return !(snakePart.x == element.x && snakePart.y == element.y);
       });
     });
-    this.position =
+    food.position =
       allPositions[Math.floor(Math.random() * allPositions.length)];
     canvas.fillStyle = foodColor;
-    canvas.fillRect(this.position.x, this.position.y, snakeSize, snakeSize);
+    canvas.fillRect(food.position.x, food.position.y, snakeSize, snakeSize);
   },
 };
 
@@ -292,6 +292,9 @@ let game = {
       game.isNewGame = false;
       document.getElementById("form-save").style.display = "block";
       document.querySelector("#form-score").textContent = game.score;
+      if(game.score == 0){
+        console.error("Nahráli jste skóre 0. Je toto chyba nebo ne?")
+      }
     }
   },
 
@@ -304,7 +307,7 @@ let game = {
   },
 };
 
-let page = {
+let pages = {
   getLeaderboard: function () {
     let localLeaderboard = JSON.parse(localStorage.getItem("leaderboard"));
     let scoreContainer = document.getElementById("score-container");
@@ -336,7 +339,7 @@ let page = {
       document.getElementById("nastaveni-hry").style.display = "none";
       document.getElementById("o-projektu").style.display = "none";
       document.getElementById("nejlepsi-skore").style.display = "block";
-      this.getLeaderboard();
+      pages.getLeaderboard();
     }
   },
 
@@ -363,7 +366,7 @@ let page = {
     document.getElementById("unsaved").style.display = "none";
     document.getElementById("saved").style.display = "block";
     document.getElementById("form-name").value = "";
-    this.getLeaderboard();
+    pages.getLeaderboard();
   },
 };
 
@@ -371,16 +374,18 @@ let page = {
 // Snake Game starts here
 ////////////////////////////////
 
+console.log("Umíte otevřít konzoli JavaScriptu. To znamená, že jste pravděpodobně vývojář. Pokud chcete nového super kolegu juniora, napište mi na: info@lukasbursa.cz")
+
 if (location.hash == "#o-projektu") {
-  page.pageView("about");
+  pages.pageView("about");
 } else if (location.hash == "#nastaveni-hry") {
-  page.pageView("settings");
+  pages.pageView("settings");
 } else {
-  page.pageView("score");
+  pages.pageView("score");
 }
 
 game.newGame();
-page.getLeaderboard();
+pages.getLeaderboard();
 
 document.addEventListener("keydown", (event) => {
   game.pressedKey = event.key;
@@ -411,21 +416,21 @@ document.querySelector(".but-new-game2").addEventListener("click", (event) => {
   game.newGame();
 });
 
-document.querySelector("#but-best-score").addEventListener("click", () => {
-  page.pageView("score");
+document.getElementById("but-best-score").addEventListener("click", () => {
+  pages.pageView("score");
 });
 
-document.querySelector("#but-settings").addEventListener("click", () => {
-  page.pageView("settings");
+document.getElementById("but-settings").addEventListener("click", () => {
+  pages.pageView("settings");
 });
 
-document.querySelector("#but-about").addEventListener("click", () => {
-  page.pageView("about");
+document.getElementById("but-about").addEventListener("click", () => {
+  pages.pageView("about");
 });
 
 document.getElementById("form-save").addEventListener("submit", (event) => {
   event.preventDefault();
-  page.saveScore(event.target.formName.value);
+  pages.saveScore(event.target.formName.value);
 });
 
 document.getElementById("settings").addEventListener("submit", (event) => {
@@ -442,7 +447,7 @@ document.getElementById("settings").addEventListener("submit", (event) => {
 });
 
 document
-  .querySelector("#playground")
+  .getElementById("playground")
   .addEventListener("swiped", function (event) {
     switch (event.detail.dir) {
       case "left":
