@@ -1,18 +1,201 @@
 <!DOCTYPE html>
 <html lang="cs">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snake Game by Lukáš Burša</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <h1>Snake Game</h1>
-    <canvas id="playground" width="400" height="400">
-        <p>Váš prohlížeč bohužel nepodporuje Canvas. Nainstalujte si nějaký modernější, pokud si chcete zahrát :)</p>
-    </canvas>
 
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hra Snake .cz</title>
+    <meta name="description"
+        content="Had (anglicky Snake) je jednoduchá, ale návyková hra, ve které hráč ovládá hada, který se pohybuje po hrací ploše a sbírá jablka. Cílem hry je udržet hada naživu co nejdéle, bez toho aby se dotkl stěn nebo svého vlastního těla. Každým jablkem, které had sní, se prodlouží a stává se těžším a složitějším k ovládání. S postupem času se obtížnost hry zvyšuje a vyžaduje od hráče větší a větší rychlost reakce. Had je oblíbenou klasickou hrou a stále přitahuje nové a staré hráče díky své jednoduchosti a návykovosti." />
+    <link href="./bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+    <div class="container-fluid" id="header">
+        <nav class="container">
+            <header class="row align-items-center">
+                <div class="col-12 col-lg-4">
+                    <h1><a href="/" id="brand">Hra Snake <span>.cz</span></a></h1>
+                </div>
+                <ul class="col-12 col-lg-8 justify-content-end">
+                    <li class="col">
+                        <a href="#" class="but-new-game">Nová hra</a>
+                    </li>
+                    <li class="col">
+                        <a href="#nejlepsi-skore" id="but-best-score">Nejlepší skóre</a>
+                    </li>
+                    <li class="col">
+                        <a href="#nastaveni-hry" id="but-settings">Nastavení hry</a>
+                    </li>
+                    <li class="col">
+                        <a href="#o-projektu" id="but-about">O projektu</a>
+                    </li>
+                </ul>
+            </header>
+        </nav>
+    </div>
+
+    <div class="container">
+        <main class="row">
+            <div class="playground-fixed">
+                <div id="actual-score">Skóre: <strong>0</strong></div>
+                <div class="playground-cont">
+                    <canvas id="playground" width="500" height="500" data-swipe-threshold="10" data-swipe-timeout="100">
+                        <p>
+                            Váš prohlížeč bohužel nepodporuje Canvas. Nainstalujte si nějaký
+                            modernější, pokud si chcete zahrát :)
+                        </p>
+                    </canvas>
+                    <div id="form-save">
+                        <div id="unsaved">
+                            <h2>Konec hry</h2>
+                            <p>Tvoje skóre: <strong id="form-score">0</strong></p>
+                            <p>Pokud chceš uložit svůj výsledek, zadej přezdívku.</p>
+                            <form>
+                                <input type="text" name="formName" id="form-name" placeholder="Přezdívka"
+                                    maxlength="50" />
+                                <input type="submit" class="form-submit" value="Uložit výsledek" />
+                            </form>
+                        </div>
+                        <div id="saved">
+                            <h2>Aktualizováno</h2>
+                            <p>
+                                <a href="#" class="but-new-game2 form-submit">Nová hra</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="help">
+                    <h2>Ovládání hry</h2>
+                    <p>
+                        Na počítači se had ovládá
+                        <strong>šipkami na klávesnici</strong> (<strong>doleva</strong>,
+                        <strong>doprava</strong>, <strong>nahoru</strong>,
+                        <strong>dolů</strong>). Hru odstartuješ stisknutím libovolné šipky.
+                        Pokud chceš začít novou hru, klikni na "<strong>Nová hra</strong>".
+                    </p>
+                    <p>
+                        Na mobilním telefonu se hra ovládá stejně, jen místo kláves použij <strong>dotyková
+                            gesta</strong>. Ideálně použij krátké a rychlé doteky.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col" class="main">
+                <p id="game-about">
+                    Had (anglicky Snake) je jednoduchá, ale návyková hra, ve které hráč
+                    ovládá hada, který se pohybuje po hrací ploše a sbírá jablka (<span class="red">&#9632;</span>).
+                    Cílem hry je udržet hada naživu co nejdéle, bez toho aby se
+                    dotkl stěn nebo svého vlastního těla. Každým jablkem, které had sní,
+                    se prodlouží a stává se těžším a složitějším k ovládání. S postupem
+                    času se obtížnost hry zvyšuje a vyžaduje od hráče větší a větší
+                    rychlost reakce. Had je oblíbenou klasickou hrou a stále přitahuje
+                    nové a staré hráče díky své jednoduchosti a návykovosti.
+                    <span class="author">Popis byl vygenerován umělou inteligencí ChatGPT</span>
+                </p>
+
+                <div id="nejlepsi-skore">
+                    <h2>Nejlepší skóre</h2>
+                    <div id="score-container"></div>
+                    <p class="score-about">
+                        Tabulka zobrazuje nejlepší skóre, které bylo dosaženo na tomto
+                        počítači.
+                    </p>
+                </div>
+
+                <div id="o-projektu">
+                    <h2>O projektu</h2>
+                    <p>
+                        Tuto hru jsem vytvořil proto, abych se naučil programovat v jazyce
+                        <strong>JavaScript</strong>. Při tvorbě této stránky jsem použil
+                        své základní znalosti <strong>HTML</strong> a
+                        <strong>CSS</strong>. Pro samotnou aplikaci je použit programovací
+                        jazyk JavaScript. S responzivitou webu mi pomohl framework
+                        <strong>Bootstrap</strong>.
+                    </p>
+                    <p>
+                        Jedná se o jednoduchou jednostránkovou aplikaci obsahující
+                        samotnou hru a základní nastavení. Skóre se ukládá do localStorage
+                        do webového prohlížeče.
+                    </p>
+                    <p>
+                        Ve svých 32 letech se chci rekvalifikovat na JavaScript
+                        programátora a tato aplikace je můj první projekt na kterém jsem
+                        si vyzkoušel, co jsem se naučil. Pokud vás moje práce zaujala a
+                        chcete mě najmout jako
+                        <strong>Junior JavaScript programátora</strong> neváhejte mi
+                        napsat na email:
+                        <a href="mailto:info@lukasbursa.cz">info@lukasbursa.cz</a>
+                        <span class="author">Lukáš Burša - budoucí JavaScript programátor</span>
+                    </p>
+                    <!-- <p>Zdrojový kód hry najdete také na GitHubu: <a href="#">Github odhaz</a></p> -->
+                    <h2>Poděkování</h2>
+                    <p>
+                        Děkuji <strong>Davidovi Šetkovi</strong> za jeho youtube kurzy, ve
+                        kterých učí JavaScript. Na základě jeho kurzů jsem naprogramoval
+                        tuto hru a vytvořil tuto stránku. Konkrétně se jedná o tyto kurzy:
+                    </p>
+                    <ul>
+                        <li>
+                            <a href="https://www.youtube.com/playlist?list=PLQ8x_VWW6AktVAKDISvXrcsh6kp7Jt_SM"
+                                target="_blank">Moderní JavaScript - od začátečníka po profíka</a>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/playlist?list=PLQ8x_VWW6AkuULtcqERgA1bnDbtdhL23-"
+                                target="_blank">JavaScript pro pokročilé - posuň se v JS na vyšší level</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="nastaveni-hry">
+                    <h2>Nastavení hry</h2>
+                    <p>Vyber typ hry "<strong>Klasickou</strong>" nebo "<strong>Jin Jang</strong>" a rychlost pohybu
+                        hada "<strong>Pomalý</strong>", "<strong>Střední</strong>" nebo "<strong>Rychlý</strong>".</p>
+                    <form id="settings">
+                        <p>
+                            <label for="settingsType">Typ hry: </label>
+                            <select name="settingsType" id="settingsType">
+                                <option value="" selected="selected">
+                                    ---
+                                </option>
+                                <option value="normal">
+                                    Klasická (víchozí)
+                                </option>
+                                <option value="jinjang">Jin Jang</option>
+                            </select>
+                        </p>
+                        <p>
+                            <label for="settingsSpeed">Rychlost hada: </label>
+                            <select name="settingsSpeed" id="settingsSpeed">
+                                <option value="" selected="selected">---</option>
+                                <option value="200">Pomalý</option>
+                                <option value="100">
+                                    Střední (víchozí)
+                                </option>
+                                <option value="50">Rychlý</option>
+                            </select>
+                        </p>
+                        <input type="submit" value="Uložit nastavení" />
+                    </form>
+                    <span class="author">Pro úspěšné uložení musí být vybrány obě položky.</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="container-fluid">
+        <div class="container">
+            <p>
+                Tuto stránku vytvořil Lukáš Burša -
+                <a href="mailto:info@lukasbursa.cz">info@lukasbursa.cz</a>
+            </p>
+        </div>
+    </footer>
+    <script src="./bootstrap.min.js"></script>
     <script src="./script.js"></script>
 </body>
+
 </html>
