@@ -2,7 +2,9 @@
 
 import("./swiped-events.js");
 
+////////////////////////////////
 // Settings
+////////////////////////////////
 
 let snakeSize = 25;
 let playgroundSizeX = 500;
@@ -12,12 +14,12 @@ let playgroundColor = "#333";
 let snakeColor = "white";
 let foodColor = "#e74c3c";
 
-// Definition of start position of snake
+// Start position of snake
 
 let startX = Math.floor(playgroundSizeX / snakeSize / 2) * snakeSize;
 let startY = Math.floor(playgroundSizeY / snakeSize / 2 + 1) * snakeSize;
 
-// Selection of canvas element
+// Set canvas
 
 let canvasSelect = document.querySelector("#playground");
 let canvas = canvasSelect.getContext("2d");
@@ -28,7 +30,7 @@ let canvasSet = document.querySelector("#playground");
 canvasSet.style.width = setWidth + "px";
 canvasSet.style.height = setWidth + "px";
 
-// Create default snake
+// Default snake settings
 
 let defaultSnakePosition = [
   {
@@ -50,12 +52,16 @@ let defaultSnakeDeletedPart = {
   y: startY,
 };
 
+////////////////////////////////
+// Objects and functions
+////////////////////////////////
+
+// Object snake
+
 let snake = {
   position: JSON.parse(JSON.stringify(defaultSnakePosition)),
   direction: defaultSnakeDirection,
   deletedPart: defaultSnakeDeletedPart,
-
-  // Fonction for mooving snake | if ateFood is true, make snake longer
 
   move: function (ateFood, direction) {
     canvas.fillStyle = playgroundColor;
@@ -70,7 +76,8 @@ let snake = {
     if (game.type == "jinjang") {
       if (
         !(
-          food.position.x == playgroundSizeX - snake.deletedPart.x - snakeSize &&
+          food.position.x ==
+          playgroundSizeX - snake.deletedPart.x - snakeSize &&
           food.position.y == playgroundSizeY - snake.deletedPart.y - snakeSize
         )
       ) {
@@ -84,6 +91,7 @@ let snake = {
     }
 
     !ateFood ? snake.position.pop() : "";
+
     snake.deletedPart = snake.position[snake.position.length - 1];
     switch (direction) {
       case "right":
@@ -136,7 +144,7 @@ let snake = {
   },
 };
 
-// Object food - position, generation of new food on playground
+// Object food
 
 let food = {
   position: {
@@ -149,6 +157,7 @@ let food = {
     y: 0,
   },
 
+  // generate new random food
   generateNew: function () {
     let allPositions = [];
     for (let i = 0; i < playgroundSizeX; i = i + snakeSize) {
@@ -168,6 +177,8 @@ let food = {
   },
 };
 
+// Object game
+
 let game = {
   playing: false,
   isNewGame: false,
@@ -175,7 +186,6 @@ let game = {
   pressedKey: "",
   type: "normal",
 
-  // Function check if snake collide with border or himself
   isCollision: function (actualDirection) {
     let findDuplicate = snake.position.filter((oneValue) => {
       return (
@@ -183,7 +193,7 @@ let game = {
       );
     });
 
-    // jin jang
+    // jin jang - collision with jin jang snake
     if (game.type == "jinjang") {
       let jinJang = false;
       snake.position.forEach((snakePart) => {
@@ -201,8 +211,10 @@ let game = {
       }
     }
 
+    // collision with snake himself
     if (findDuplicate.length > 1) {
       return true;
+      // collision with playground borders
     } else if (actualDirection == "right") {
       return snake.position[0].x >= playgroundSizeX;
     } else if (actualDirection == "left") {
@@ -224,16 +236,17 @@ let game = {
     snake.direction = defaultSnakeDirection;
     snake.deletedPart = defaultSnakeDeletedPart;
 
+    // Render playground
     canvas.fillStyle = playgroundColor;
     canvas.fillRect(0, 0, playgroundSizeX, playgroundSizeY);
 
-    // Render first food on playground
     food.generateNew();
 
-    // Render start snake position
+    // Render new start snake
     snake.position.forEach((snakePart) => {
       canvas.fillStyle = snakeColor;
       canvas.fillRect(snakePart.x, snakePart.y, snakeSize, snakeSize);
+
       // jin jang
       if (game.type == "jinjang") {
         canvas.fillStyle = foodColor;
@@ -292,8 +305,8 @@ let game = {
       game.isNewGame = false;
       document.getElementById("form-save").style.display = "block";
       document.querySelector("#form-score").textContent = game.score;
-      if(game.score == 0){
-        console.error("Nahráli jste skóre 0. Je toto chyba nebo ne?")
+      if (game.score == 0) {
+        console.error("Nahráli jste skóre 0. Je toto chyba nebo ne?");
       }
     }
   },
@@ -371,10 +384,12 @@ let pages = {
 };
 
 ////////////////////////////////
-// Snake Game starts here
+// Page start
 ////////////////////////////////
 
-console.log("Umíte otevřít konzoli JavaScriptu. To znamená, že jste pravděpodobně vývojář. Pokud chcete nového super kolegu juniora, napište mi na: info@lukasbursa.cz")
+console.log(
+  "Umíte otevřít konzoli JavaScriptu. To znamená, že jste pravděpodobně vývojář. Pokud chcete nového super kolegu juniora, napište mi na: info@lukasbursa.cz"
+);
 
 if (location.hash == "#o-projektu") {
   pages.pageView("about");
@@ -386,6 +401,10 @@ if (location.hash == "#o-projektu") {
 
 game.newGame();
 pages.getLeaderboard();
+
+////////////////////////////////
+// Event listeners
+////////////////////////////////
 
 document.addEventListener("keydown", (event) => {
   game.pressedKey = event.key;
