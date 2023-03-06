@@ -77,7 +77,7 @@ let snake = {
       if (
         !(
           food.position.x ==
-          playgroundSizeX - snake.deletedPart.x - snakeSize &&
+            playgroundSizeX - snake.deletedPart.x - snakeSize &&
           food.position.y == playgroundSizeY - snake.deletedPart.y - snakeSize
         )
       ) {
@@ -215,8 +215,13 @@ let game = {
     if (findDuplicate.length > 1) {
       return true;
       // collision with playground borders
-    }else{
-      return snake.position[0].x < 0 || snake.position[0].x >= playgroundSizeX || snake.position[0].y < 0 || snake.position[0].y >= playgroundSizeY;
+    } else {
+      return (
+        snake.position[0].x < 0 ||
+        snake.position[0].x >= playgroundSizeX ||
+        snake.position[0].y < 0 ||
+        snake.position[0].y >= playgroundSizeY
+      );
     }
   },
 
@@ -322,8 +327,9 @@ let pages = {
     if (Array.isArray(localLeaderboard)) {
       localLeaderboard.forEach((oneResult) => {
         let newP = document.createElement("p");
-        newP.innerHTML = `<strong>${oneResult.score}</strong> - ${oneResult.name == "" ? "<em>bezejmenný hráč</em>" : oneResult.name
-          }`;
+        newP.innerHTML = `<strong>${oneResult.score}</strong> - ${
+          oneResult.name == "" ? "<em>bezejmenný hráč</em>" : oneResult.name
+        }`;
         scoreContainer.appendChild(newP);
       });
     } else {
