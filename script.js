@@ -215,14 +215,8 @@ let game = {
     if (findDuplicate.length > 1) {
       return true;
       // collision with playground borders
-    } else if (actualDirection == "right") {
-      return snake.position[0].x >= playgroundSizeX;
-    } else if (actualDirection == "left") {
-      return snake.position[0].x < 0;
-    } else if (actualDirection == "up") {
-      return snake.position[0].y < 0;
-    } else if (actualDirection == "down") {
-      return snake.position[0].y >= playgroundSizeY;
+    }else{
+      return snake.position[0].x < 0 || snake.position[0].x >= playgroundSizeX || snake.position[0].y < 0 || snake.position[0].y >= playgroundSizeY;
     }
   },
 
