@@ -77,7 +77,7 @@ let snake = {
       if (
         !(
           food.position.x ==
-          playgroundSizeX - snake.deletedPart.x - snakeSize &&
+            playgroundSizeX - snake.deletedPart.x - snakeSize &&
           food.position.y == playgroundSizeY - snake.deletedPart.y - snakeSize
         )
       ) {
@@ -328,8 +328,9 @@ let pages = {
     if (Array.isArray(localLeaderboard)) {
       localLeaderboard.forEach((oneResult) => {
         let newP = document.createElement("p");
-        newP.innerHTML = `<strong>${oneResult.score}</strong> - ${oneResult.name == "" ? "<em>bezejmenný hráč</em>" : oneResult.name
-          }`;
+        newP.innerHTML = `<strong>${oneResult.score}</strong> - ${
+          oneResult.name == "" ? "<em>bezejmenný hráč</em>" : oneResult.name
+        }`;
         scoreContainer.appendChild(newP);
       });
     } else {
@@ -388,7 +389,7 @@ let pages = {
 ////////////////////////////////
 
 console.log(
-  "Umíte otevřít konzoli JavaScriptu. To znamená, že jste pravděpodobně vývojář. Pokud chcete nového super kolegu juniora, napište mi na: info@lukasbursa.cz"
+  "Umíte otevřít konzoli JavaScriptu. To znamená, že jste pravděpodobně vývojář. Pokud hledáte spolupracovníka, napište mi na email: info@lukasbursa.cz"
 );
 
 if (location.hash == "#o-projektu") {
